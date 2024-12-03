@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Modeling Platform</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #canvas { display: block; }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #partsList { margin-top: 10px; max-height: 200px; overflow-y: auto; }
+        #partsList div { margin-bottom: 5px; }
+        label { display: inline-block; width: 60px; }
+        input[type="text"] { width: 100px; }
+    </style>
+</head>
+<body>
+    <div id="ui">
+        <button id="addCube">Add Cube</button>
+        <button id="export">Export JSON</button>
+        <div id="partsList"></div>
+    </div>
+
+    <!-- Include Three.js and OrbitControls via ES6 modules -->
+    <script type="module">
+        // Import Three.js and OrbitControls
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
+        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xcccccc);
+
+        // Camera setup
+        const camera = new THREE.PerspectiveCamera(
+            75, window.innerWidth / window.innerHeight, 0.1, 1000
+        );
+        camera.position.set(0, 2, 5);
+
+        // Renderer setup
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Controls setup
+        const controls = new OrbitControls(camera, renderer.domElement);
+
+        // Add a grid helper
+        const gridHelper = new THREE.GridHelper(10, 10);
+        scene.add(gridHelper);
+
+        // Lighting
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 10, 7.5);
+        scene.add(light);
+
+        // Array to store all segments
+        const segments = [];
+
+        // Function to add a cube
+        function addCube() {
+            const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+            const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(0, 0.25, 0);
+            scene.add(cube);
+
+            // Store segment data
+            segments.push({
+                name: "", // User can add name later
+                sensitive: false, // Default value
+                faces: extractFaces(cube)
+            });
+
+            updatePartsList();
+        }
+
+        // Function to extract faces from a mesh
+        function extractFaces(mesh) {
+            const geometry = mesh.geometry.clone();
+            geometry.applyMatrix4(mesh.matrixWorld); // Apply mesh transformations
+
+            const positionAttribute = geometry.getAttribute('position');
+            const vertices = [];
+            for (let i = 0; i < positionAttribute.count; i++) {
+                vertices.push(positionAttribute.getX(i));
+                vertices.push(positionAttribute.getY(i));
+                vertices.push(positionAttribute.getZ(i));
+            }
+
+            const indexArray = geometry.getIndex().array;
+            const indices = Array.from(indexArray);
+
+            // For simplicity, we'll assign all faces to "defaultFace"
+            return {
+                defaultFace: {
+                    vertices: vertices,
+                    indices: indices
+                }
+            };
+        }
+
+        // Update the parts list UI
+        function updatePartsList() {
+            const partsList = document.getElementById('partsList');
+            partsList.innerHTML = '';
+            segments.forEach((segment, index) => {
+                const div = document.createElement('div');
+
+                const label = document.createElement('label');
+                label.textContent = `Part ${index + 1}: `;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = segment.name;
+                input.oninput = function () {
+                    segment.name = this.value;
+                };
+
+                const checkboxLabel = document.createElement('label');
+                checkboxLabel.textContent = 'Sensitive';
+                checkboxLabel.style.width = 'auto';
+                checkboxLabel.style.marginLeft = '10px';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = segment.sensitive;
+                checkbox.onchange = function () {
+                    segment.sensitive = this.checked;
+                };
+
+                div.appendChild(label);
+                div.appendChild(input);
+                div.appendChild(checkboxLabel);
+                div.appendChild(checkbox);
+                partsList.appendChild(div);
+            });
+        }
+
+        // Function to export JSON
+        function exportJSON() {
+            const json = JSON.stringify({ segments: segments }, null, 2);
+            downloadJSON(json, 'model.json');
+        }
+
+        // Function to trigger download
+        function downloadJSON(content, fileName) {
+            const a = document.createElement('a');
+            const file = new Blob([content], { type: 'application/json' });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // Button event listeners
+        document.getElementById('addCube').addEventListener('click', addCube);
+        document.getElementById('export').addEventListener('click', exportJSON);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    </script>
+</body>
+</html>

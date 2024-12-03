@@ -1,0 +1,8 @@
+freetype-py
+glfw
+moderngl
+pyrr
+pillow
+numpy
+numba
+noise
