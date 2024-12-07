@@ -18,7 +18,7 @@ class Entity:
         self.all_vertices, self.all_indices = self.create()
 
     def create(self):
-        return Models().load("player")
+        return Models().load("cube")
 
     def create_object(self, ctx, shader):
         program = ctx.program(vertex_shader=shader.get_vertex_shader(), fragment_shader=shader.get_fragment_shader())
