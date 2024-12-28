@@ -3,3 +3,7 @@
 .venv
 .venv/
 __pycache__
+.fleet
+.fleet/
+index.html
+tests.py

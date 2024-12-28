@@ -10,6 +10,7 @@ class Models:
 
     def load(self, model):
         mdl = Model(model)
+        # print(mdl.vertices)
         return mdl.vertices, mdl.indices
 
 
@@ -51,6 +52,8 @@ class Segment:
         self.sensitive = segment_data["sensitive"]
 
         for face in segment_data["faces"].values():
+
+            # To change pos, these need to be process 3 by 3 (3 modified, 3 untouched)
             self.vertices += face["v"]
             self.indices += face["i"]
 
