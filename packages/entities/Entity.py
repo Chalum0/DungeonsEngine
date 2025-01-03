@@ -82,10 +82,9 @@ class Entity:
         # Update the 'model' uniform on the GPU
         self.model = self._calculate_model_matrix()
         self.program['model'].write(self.model)
+        self._update_bounding_box()
 
     def collides_with(self, obj):
-        self._update_bounding_box()
-        obj._update_bounding_box()
         return self.bounding_box.collides_with(obj.bounding_box)
 
     def set_rotation(self, rx, ry, rz):
