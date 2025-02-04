@@ -7,3 +7,5 @@ __pycache__
 .fleet/
 index.html
 tests.py
+/output.txt
+/.nodeignore

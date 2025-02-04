@@ -39,6 +39,7 @@ class Main:
         self.camera = Camera.Camera(self.window_size[0], self.window_size[1], self.window, self.player)
         self.text = Text(self.ctx, self.window_size)
         self.text.load_font("Minecraft")
+        glfw.set_scroll_callback(self.window, self.scroll_callback)
 
         self.loop()
         self.terminate()
@@ -147,6 +148,12 @@ class Main:
 
     def terminate(self):
         glfw.terminate()
+
+    # ---------------------------------------------------------------------------------------------------------------------------------
+
+    def scroll_callback(self, window, xoffset, yoffset):
+        """Scroll wheel callback - pass scroll input on to the camera."""
+        self.camera.on_scroll(yoffset)
 
 
 if __name__ == "__main__":
