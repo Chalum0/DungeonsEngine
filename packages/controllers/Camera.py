@@ -18,7 +18,7 @@ class Camera:
         self.player = player
         self.free_cam = False
 
-        self.third_person = True  # Toggle if you'd like
+        self.third_person = False  # Toggle if you'd like
         self.distance = 5.0
         self.min_distance = 1.0
         self.max_distance = 20.0
