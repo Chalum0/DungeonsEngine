@@ -1,26 +1,26 @@
 from windowManager import windowManager
 
-from packages.entities.mobs.MobController import MobController
-from packages.textures.text.Text import Text
-from packages.entities.Entity import Entity
-from packages.entities.Player import Player
-from packages.shaders.Shader import Shader
-from packages.controllers import Controls
-from packages.textures.Textures import *
-from packages.entities.Settings import *
-from packages.controllers import Camera
-from packages.logic.Clock import Clock
-from packages.tkinter.app import *
+# from packages.entities.mobs.MobController import MobController
+# from packages.textures.text.Text import Text
+# from packages.entities.Entity import Entity
+# from packages.entities.Player import Player
+# from packages.shaders.Shader import Shader
+# from packages.controllers import Controls
+# from packages.textures.Textures import *
+# from packages.entities.Settings import *
+# from packages.controllers import Camera
+# from packages.logic.Clock import Clock
+# from packages.tkinter.app import *
 
-from pyrr import Matrix44
-import moderngl
-import random
-import time
-import glfw
+# from pyrr import Matrix44
+# import moderngl
+# import random
+# import time
+# import glfw
 
 class Engine(windowManager):
     def __init__(self):
-        super().__init__()
+        windowManager.__init__(self)
         self.on_load = None
         self.on_shutdown = None
         self.on_frame = None
@@ -32,11 +32,14 @@ class Engine(windowManager):
         self._initialize_opengl(settings=self.window_settings)
         self._load_textures()
         self._run_loop()
-        self.terminate()
+        self._terminate()
 
     def _run_loop(self):
         while not self._window_should_close():
             pass
+
+    def quit(self):
+        self._terminate()
 
 #     def __init__(self):
 #         # global shared_data

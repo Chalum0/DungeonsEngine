@@ -39,15 +39,6 @@ class windowManager:
         self.ctx = moderngl.create_context()
         self.window_size = glfw.get_window_size(self.window)
 
-    def set_window_title(self, new_title: str):
-        if not type(new_title) == str:
-            raise TypeError
-
-        if self.window:
-            glfw.set_window_title(self.window, new_title)
-        else:
-            self.window_settings["title"] = new_title
-
     def _load_textures(self):
         texture = Textures(self.ctx)
         texture.get_array().use(location=0)  # Ensure texture unit 0 is used for the texture array
@@ -56,6 +47,15 @@ class windowManager:
         return glfw.window_should_close(self.window)
 
     @staticmethod
-    def terminate():
+    def _terminate():
         glfw.terminate()
+
+    def set_window_title(self, new_title: str):
+        if not type(new_title) == str:
+            raise TypeError
+
+        if self.window:
+            glfw.set_window_title(self.window, new_title)
+        else:
+            self.window_settings["title"] = new_title
  
