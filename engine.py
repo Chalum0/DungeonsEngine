@@ -1,4 +1,4 @@
-from windowManager import windowManager
+from windowManager import WindowManager
 
 # from packages.entities.mobs.MobController import MobController
 # from packages.textures.text.Text import Text
@@ -18,9 +18,9 @@ from windowManager import windowManager
 # import time
 # import glfw
 
-class Engine(windowManager):
+class Engine(WindowManager):
     def __init__(self):
-        windowManager.__init__(self)
+        WindowManager.__init__(self)
         self.on_load = None
         self.on_shutdown = None
         self.on_frame = None

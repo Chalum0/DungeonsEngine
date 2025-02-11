@@ -4,7 +4,7 @@ import moderngl
 from packages.textures.Textures import Textures
 
 
-class windowManager:
+class WindowManager:
     def __init__(self):
         self.window_settings = {"use-v-sync": False,
                                 "set-cursor-invisible": True,
