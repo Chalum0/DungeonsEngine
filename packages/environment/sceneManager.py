@@ -35,6 +35,14 @@ class SceneManager:
     def __str__(self):
         return f"{list(self._scenes.keys())}"
 
+    @property
+    def camera(self):
+        return self.current_scene._camera
+
+    @camera.setter
+    def camera(self, new_value):
+        self.current_scene._camera = new_value
+
 class SceneAlreadyExists(Exception):
     def __init__(self, name):
         super().__init__(
