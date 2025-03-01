@@ -1,3 +1,4 @@
+from packages.environment.sceneManager import SceneManager
 from windowManager import WindowManager
 
 # from packages.entities.mobs.MobController import MobController
@@ -18,8 +19,9 @@ from windowManager import WindowManager
 # import time
 # import glfw
 
-class Engine(WindowManager):
+class Engine(WindowManager, SceneManager):
     def __init__(self):
+        SceneManager.__init__(self)
         WindowManager.__init__(self)
         self.on_load = None
         self.on_shutdown = None

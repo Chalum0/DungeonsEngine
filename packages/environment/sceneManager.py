@@ -5,7 +5,7 @@ class SceneManager:
         self.current_scene = None
         self._scenes = {}
 
-    def ceate_scene(self, name=None):
+    def create_scene(self, name=None):
         if name is None:
             name = f"scene{len(self._scenes)}"
         if not name in self._scenes.keys():
@@ -31,6 +31,10 @@ class SceneManager:
             self.current_scene = self._scenes[scene_name]
         else:
             raise UnknownScene(scene_name)
+
+    def use_window(self, window):
+        if self.current_scene is not None:
+            self.current_scene.use_window(window)
 
     def __str__(self):
         return f"{list(self._scenes.keys())}"

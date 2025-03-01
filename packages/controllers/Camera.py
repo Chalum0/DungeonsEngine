@@ -89,6 +89,7 @@ class Camera:
 
         return Matrix44.look_at(self.pos, target, self.up)
 
+
     def _update_free_cam(self, dt):
         """Your old free-fly code, used if self.third_person = False."""
         # Example of reusing your existing approach
@@ -122,7 +123,6 @@ class Camera:
             self.pos += self.speed * self.front * dt
         else:
             self.pos = np.array([self.pos[0], self.pos[1], self.pos[2]-self.speed*dt], dtype=np.float32)
-
 
     def move_backwards(self, dt):
         if self.free_cam:

@@ -1,5 +1,5 @@
-from packages.entities.BoundingBox import BoundingBox
-from packages.entities.models.Models import *
+from packages.environment.entities.BoundingBox import BoundingBox
+from packages.environment.entities.models.Models import *
 from packages.logic.functions.Mesh import *
 from packages.shaders.Shader import *
 
