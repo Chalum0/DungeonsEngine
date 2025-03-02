@@ -1,4 +1,4 @@
-from packages.environment.entities.mobs.Zombie import Zombie
+from packages.entities.mobs.Zombie import Zombie
 
 
 class MobController:

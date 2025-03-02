@@ -1,7 +1,9 @@
 import glfw
 import moderngl
 
+from packages.environment.Cursor import Cursor
 from packages.textures.Textures import Textures
+from packages.shaders.Shader import Shader
 
 
 class WindowManager:
@@ -39,9 +41,14 @@ class WindowManager:
         self.ctx = moderngl.create_context()
         self.window_size = glfw.get_window_size(self.window)
 
+        self.cursor = Cursor(self.window)
+
     def _load_textures(self):
         texture = Textures(self.ctx)
         texture.get_array().use(location=0)  # Ensure texture unit 0 is used for the texture array
+
+    def _load_shaders(self):
+        self.shader = Shader()
 
     def _window_should_close(self) -> bool:
         return glfw.window_should_close(self.window)

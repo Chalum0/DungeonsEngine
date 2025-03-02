@@ -1,7 +1,7 @@
 from packages.environment.cameras.CameraSettings import *
 from packages.environment.cameras.Camera import Camera
 from packages.environment.Cursor import Cursor
-from packages.environment.entities.Entity import Entity
+from packages.entities.Entity import Entity
 
 from typing import override
 from pyrr import Matrix44

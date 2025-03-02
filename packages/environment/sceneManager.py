@@ -2,14 +2,15 @@ from packages.environment.Scene import Scene
 
 class SceneManager:
     def __init__(self):
-        self.current_scene = None
+        self.current_scene: Scene = None
+        self._used_window = None
         self._scenes = {}
 
     def create_scene(self, name=None):
         if name is None:
             name = f"scene{len(self._scenes)}"
         if not name in self._scenes.keys():
-            self._scenes[name] = Scene(name)
+            self._scenes[name] = Scene(name, self._used_window)
         else:
             raise SceneAlreadyExists(name)
 
@@ -32,20 +33,22 @@ class SceneManager:
         else:
             raise UnknownScene(scene_name)
 
-    def use_window(self, window):
+    def _use_window(self, window):
+        print("using window 1")
         if self.current_scene is not None:
             self.current_scene.use_window(window)
+        self._used_window = window
 
     def __str__(self):
         return f"{list(self._scenes.keys())}"
 
-    @property
-    def camera(self):
-        return self.current_scene._camera
-
-    @camera.setter
-    def camera(self, new_value):
-        self.current_scene._camera = new_value
+    # @property
+    # def camera(self):
+    #     return self.current_scene._camera
+    #
+    # @camera.setter
+    # def camera(self, new_value):
+    #     self.current_scene._camera = new_value
 
 class SceneAlreadyExists(Exception):
     def __init__(self, name):

@@ -1,12 +1,8 @@
-from packages.environment.entities.BoundingBox import BoundingBox
-from packages.environment.entities.models.Models import *
-from packages.logic.functions.Mesh import *
-from packages.shaders.Shader import *
+from packages.entities.BoundingBox import BoundingBox
+from packages.entities.models.Models import *
 
 from pyrr import Matrix44, Vector3, Vector4
-from copy import deepcopy
-import numpy as np
-import json
+
 
 class Entity:
     def __init__(self, x, y, z):
@@ -26,6 +22,7 @@ class Entity:
 
     def create(self):
         return Models().load("cube")
+    
     def create_object(self, ctx, shader):
         # Create the ModernGL program
         program = ctx.program(

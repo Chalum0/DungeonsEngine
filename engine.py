@@ -1,4 +1,4 @@
-from packages.environment.sceneManager import SceneManager
+from packages.environment.SceneManager import SceneManager
 from windowManager import WindowManager
 
 # from packages.entities.mobs.MobController import MobController
@@ -10,14 +10,14 @@ from windowManager import WindowManager
 # from packages.textures.Textures import *
 # from packages.entities.Settings import *
 # from packages.controllers import Camera
-# from packages.logic.Clock import Clock
+from packages.logic.Clock import Clock
 # from packages.tkinter.app import *
 
-# from pyrr import Matrix44
-# import moderngl
+from pyrr import Matrix44
+import moderngl
 # import random
 # import time
-# import glfw
+import glfw
 
 class Engine(WindowManager, SceneManager):
     def __init__(self):
@@ -32,16 +32,54 @@ class Engine(WindowManager, SceneManager):
         if self.on_load:
             self.on_load()
         self._initialize_opengl(settings=self.window_settings)
+        self._load_shaders()
         self._load_textures()
         self._run_loop()
         self._terminate()
 
     def _run_loop(self):
+        self.clock = Clock()
         while not self._window_should_close():
-            pass
+            self.clock.tick()
+            # self.movements()
+
+            # self.shared_data["fps"] = self.clock.fps
+            # self.shared_data["coords"] = (self.camera.pos[0], self.camera.pos[1], self.camera.pos[2])
+            # self.shared_data["yaw"] = self.camera.yaw
+            # self.shared_data["pitch"] = self.camera.pitch
+            # self.shared_data["mob_count"] = self.mob_controller.get_mobs_count()
+
+            self.ctx.screen.use()
+            self.ctx.clear(0.05, 0.05, 0.1)
+            self.ctx.enable(moderngl.DEPTH_TEST)
+
+            # self.tasks()
+            self.render()
+
+            glfw.swap_buffers(self.window)
+            glfw.poll_events()
+
+    def render(self):
+        if self.current_scene is not None:
+            print(self.current_scene.camera)
+            if self.current_scene.camera is not None:
+                print("a")
+
+                view = self.current_scene.camera.update(self.clock.dt, self.window_size[0], self.window_size[1], self.cursor)
+                proj = Matrix44.perspective_projection(45.0, self.window_size[0] / self.window_size[1], 0.1, 1000.0)
+
+                for entity in self.current_scene.entities:
+                    if entity.get_vertex_object()["vao"] is not None:
+                        entity.get_vertex_object()["vao"].program["model"].write(entity.model.astype("f4").tobytes())
+                        entity.get_vertex_object()["vao"].program["view"].write(view.astype("f4").tobytes())
+                        entity.get_vertex_object()["vao"].program["proj"].write(proj.astype("f4").tobytes())
+                        entity.get_vertex_object()["vao"].render(moderngl.TRIANGLES, vertices=entity.get_vertices_amount())
+                    else:
+                        entity.create_object(self.ctx, self.shader)
 
     def quit(self):
         self._terminate()
+
 
 #     def __init__(self):
 #         # global shared_data
@@ -71,7 +109,9 @@ class Engine(WindowManager, SceneManager):
 #         # self.text = Text(self.ctx, self.window_size)
 #         # self.text.load_font("Minecraft")
 #         glfw.set_scroll_callback(self.window, self.scroll_callback)
-#
+
+pass
+
 #     def initialize_opengl(self):
 #         if not glfw.init():
 #             raise Exception("GLFW can't be initialized.")
@@ -89,12 +129,16 @@ class Engine(WindowManager, SceneManager):
 #         glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)  # make cursor invisible
 #         self.ctx = moderngl.create_context()
 #         self.window_size = glfw.get_window_size(self.window)
-#
+
+pass
+
 #     def load_textures(self):
 #         # Load texture
 #         texture = Textures(self.ctx)
 #         texture.get_array().use(location=0)  # Ensure texture unit 0 is used for the texture array
-#
+
+pass
+
 #     def run(self):
 #         self.on_load_exec()
 #         self.loop()
@@ -106,7 +150,9 @@ class Engine(WindowManager, SceneManager):
 #     def on_load_exec(self):
 #         if self.on_load is not None:
 #             self.on_load()
-#
+
+pass
+
 #     def loop(self):
 #         while not glfw.window_should_close(self.window):
 #             self.clock.tick()
@@ -127,7 +173,9 @@ class Engine(WindowManager, SceneManager):
 #
 #             glfw.swap_buffers(self.window)
 #             glfw.poll_events()
-#
+
+pass
+
 #     def movements(self):
 #         dt = self.clock.dt
 #         player = self.player
@@ -161,7 +209,9 @@ class Engine(WindowManager, SceneManager):
 #             player.rotate(0, 1*dt, 0)
 #         if keys["P_R_B"]:
 #             player.rotate(0, -1*dt, 0)
-#
+
+pass
+
 #     def tasks(self):
 #         if self.mob_controller.get_mobs_count() <= 100:
 #             for mob in self.mob_controller.get_all_mobs():
@@ -184,7 +234,9 @@ class Engine(WindowManager, SceneManager):
 #                 entity.get_vertex_object()["vao"].render(moderngl.TRIANGLES, vertices=entity.get_vertices_amount())
 #             else:
 #                 entity.create_object(self.ctx, self.shader)
-#
+
+pass
+
 #     def terminate(self):
 #         glfw.terminate()
 #

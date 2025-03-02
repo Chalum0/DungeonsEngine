@@ -22,3 +22,6 @@ class Camera:
 
     def on_scroll(self, xoffset, yoffset):
         pass
+
+    def update(self, delta_time, width, height, cursor):
+        pass

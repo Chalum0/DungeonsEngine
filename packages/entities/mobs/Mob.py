@@ -1,6 +1,6 @@
-from packages.environment.entities.Entity import Entity
+from packages.entities.Entity import Entity
 
-from math import dist, sqrt
+from math import sqrt
 
 
 class Mob(Entity):
