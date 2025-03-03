@@ -1,4 +1,4 @@
-from packages.interface.Button import Button
+from packages.core.interface.Button import Button
 
 
 class Interface:

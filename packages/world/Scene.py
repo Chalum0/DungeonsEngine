@@ -1,5 +1,5 @@
-from packages.environment.CameraManager import CameraManager
-from packages.environment.EntityManager import EntityManager
+from packages.world.CameraManager import CameraManager
+from packages.world.EntityManager import EntityManager
 
 
 class Scene(CameraManager, EntityManager):

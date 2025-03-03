@@ -1,5 +1,5 @@
-from packages.environment.entities.EntityTemplate import EntityTemplate
-from packages.environment.entities.ModelManager import ModelManager
+from packages.world.entities.EntityTemplate import EntityTemplate
+from packages.world.entities.ModelManager import ModelManager
 
 
 class EntityManager:

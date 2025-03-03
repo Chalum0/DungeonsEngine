@@ -1,4 +1,4 @@
-from packages.textures.TexturesList import *
+from packages.core.textures.TexturesList import *
 
 from PIL import Image
 
@@ -11,7 +11,7 @@ class Textures:
 
     def load_textures(self, paths, ctx):
         # Load images and convert each to RGB to ensure there are no palette-based images
-        images = [Image.open(f"packages/textures/{path}").convert('RGBA') for path in paths]
+        images = [Image.open(f"packages/core/textures/{path}").convert('RGBA') for path in paths]
         if not all(img.size == images[0].size for img in images):
             raise ValueError("All textures must have the same dimensions for a texture array.")
 

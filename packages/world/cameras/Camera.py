@@ -1,4 +1,4 @@
-from packages.environment.cameras.CameraSettings import *
+from packages.world.cameras.CameraSettings import *
 import numpy as np
 
 

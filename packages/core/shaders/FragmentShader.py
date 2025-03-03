@@ -1,4 +1,4 @@
-from packages.shaders.Settings import *
+from packages.core.shaders.Settings import *
 
 
 class FragmentShader:

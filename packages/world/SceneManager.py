@@ -1,4 +1,4 @@
-from packages.environment.Scene import Scene
+from packages.world.Scene import Scene
 
 class SceneManager:
     def __init__(self):

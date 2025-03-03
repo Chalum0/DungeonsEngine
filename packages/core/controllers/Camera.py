@@ -1,5 +1,5 @@
-from packages.controllers import CameraControls
-from packages.controllers.Settings import *
+from packages.core.controllers import CameraControls
+from packages.core.controllers.Settings import *
 from pyrr import Matrix44, Vector3
 import numpy as np
 import glfw

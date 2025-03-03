@@ -1,4 +1,4 @@
-from packages.controllers.Settings import *
+from packages.core.controllers.Settings import *
 import glfw
 
 class Controls:

@@ -1,0 +1,1 @@
+SHADER_PATH = "packages/core/shaders/shaderFiles/"

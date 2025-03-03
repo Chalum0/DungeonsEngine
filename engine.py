@@ -1,33 +1,21 @@
-from packages.environment.SceneManager import SceneManager
-from windowManager import WindowManager
+from packages.core.system.ScriptManager import ScriptManager
+from packages.core.system.WindowManager import WindowManager
+from packages.world.SceneManager import SceneManager
 
-# from packages.entities.mobs.MobController import MobController
-# from packages.textures.text.Text import Text
-# from packages.entities.Entity import Entity
-# from packages.entities.Player import Player
-# from packages.shaders.Shader import Shader
-# from packages.controllers import Controls
-# from packages.textures.Textures import *
-# from packages.entities.Settings import *
-# from packages.controllers import Camera
-from packages.logic.Clock import Clock
-# from packages.tkinter.app import *
+from packages.core.logic.Clock import Clock
 
 from pyrr import Matrix44
 import moderngl
-# import random
-# import time
 import glfw
 
-class Engine(WindowManager, SceneManager):
+class Engine(WindowManager, SceneManager, ScriptManager):
     def __init__(self):
         SceneManager.__init__(self)
         WindowManager.__init__(self)
+        ScriptManager.__init__(self)
         self.on_load = None
         self.on_shutdown = None
         self.on_frame = None
-        
-
     def run(self):
         if self.on_load:
             self.on_load()
@@ -36,7 +24,6 @@ class Engine(WindowManager, SceneManager):
         self._load_textures()
         self._run_loop()
         self._terminate()
-
     def _run_loop(self):
         self.clock = Clock()
         while not self._window_should_close():
@@ -58,12 +45,9 @@ class Engine(WindowManager, SceneManager):
 
             glfw.swap_buffers(self.window)
             glfw.poll_events()
-
     def render(self):
         if self.current_scene is not None:
-            print(self.current_scene.camera)
             if self.current_scene.camera is not None:
-                print("a")
 
                 view = self.current_scene.camera.update(self.clock.dt, self.window_size[0], self.window_size[1], self.cursor)
                 proj = Matrix44.perspective_projection(45.0, self.window_size[0] / self.window_size[1], 0.1, 1000.0)
@@ -221,19 +205,6 @@ pass
 #                     self.mob_controller.spawn_zombie(random.randint(-2, 2), 0, random.randint(-2, 2))
 #                     # self.mob_controller.spawn_zombie(random.randint(-2, 2), 0, random.randint(-2, 2))
 #         pass
-#
-#     def render(self):
-#         view = self.camera.update(self.clock.dt)
-#         proj = Matrix44.perspective_projection(45.0, self.window_size[0] / self.window_size[1], 0.1, 1000.0)
-#
-#         for entity in [self.player] + self.mob_controller.get_all_mobs():
-#             if entity.get_vertex_object()["vao"] is not None:
-#                 entity.get_vertex_object()["vao"].program["model"].write(entity.model.astype("f4").tobytes())
-#                 entity.get_vertex_object()["vao"].program["view"].write(view.astype("f4").tobytes())
-#                 entity.get_vertex_object()["vao"].program["proj"].write(proj.astype("f4").tobytes())
-#                 entity.get_vertex_object()["vao"].render(moderngl.TRIANGLES, vertices=entity.get_vertices_amount())
-#             else:
-#                 entity.create_object(self.ctx, self.shader)
 
 pass
 
@@ -245,9 +216,3 @@ pass
 #     def scroll_callback(self, window, xoffset, yoffset):
 #         """Scroll wheel callback - pass scroll input on to the camera."""
 #         self.camera.on_scroll(yoffset)
-#
-#
-# # if __name__ == "__main__":
-# #     # shared_data = {"fps": 0, "coords": (0, 0, 0), "yaw": 0, "pitch": 0, "mob_count": 0}
-# #     # debug_app(shared_data)
-# #     main = Engine()

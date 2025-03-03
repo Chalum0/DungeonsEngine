@@ -1,6 +1,6 @@
 import unittest
 
-from packages.shaders.Shader import Shader
+from packages.core.shaders.Shader import Shader
 
 
 class TestShader(unittest.TestCase):

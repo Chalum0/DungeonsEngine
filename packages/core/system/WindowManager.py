@@ -1,9 +1,9 @@
 import glfw
 import moderngl
 
-from packages.environment.Cursor import Cursor
-from packages.textures.Textures import Textures
-from packages.shaders.Shader import Shader
+from packages.world.Cursor import Cursor
+from packages.core.textures.Textures import Textures
+from packages.core.shaders.Shader import Shader
 
 
 class WindowManager:

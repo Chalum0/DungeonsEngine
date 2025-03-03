@@ -1,4 +1,4 @@
-from packages.environment.cameras import TPSCamera, Camera
+from packages.world.cameras import TPSCamera, Camera
 
 import glfw
 
@@ -13,7 +13,6 @@ class CameraManager:
 
     def set_camera(self, camera_name):
         self._camera = self._cameras[camera_name]
-        print(type(self._window))
         # glfw.set_scroll_callback(self._window, self._camera.on_scroll)
 
     def _create_tps_camera(self, name, pos, entity):

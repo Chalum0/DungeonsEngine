@@ -1,4 +1,4 @@
-from packages.environment.entities.Model import Model
+from packages.world.entities.Model import Model
 
 class ModelManager:
     def __init__(self):

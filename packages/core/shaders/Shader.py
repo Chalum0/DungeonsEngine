@@ -1,5 +1,5 @@
-from packages.shaders.FragmentShader import FragmentShader
-from packages.shaders.VertexShader import VertexShader
+from packages.core.shaders.FragmentShader import FragmentShader
+from packages.core.shaders.VertexShader import VertexShader
 
 class Shader:
     def __init__(self):

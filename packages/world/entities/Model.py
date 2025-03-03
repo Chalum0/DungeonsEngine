@@ -1,4 +1,4 @@
-from packages.environment.entities.ModelSegment import ModelSegment
+from packages.world.entities.ModelSegment import ModelSegment
 
 import numpy as np
 import json

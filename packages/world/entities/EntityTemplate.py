@@ -1,5 +1,5 @@
-from packages.environment.entities.ModelManager import ModelManager
-from packages.environment.entities.BoundingBox import BoundingBox
+from packages.world.entities.ModelManager import ModelManager
+from packages.world.entities.BoundingBox import BoundingBox
 
 from pyrr import Vector3, Vector4, Matrix44
 import numpy as np

@@ -1,14 +1,14 @@
-from packages.environment.cameras.CameraSettings import *
-from packages.environment.cameras.Camera import Camera
-from packages.environment.Cursor import Cursor
-from packages.entities.Entity import Entity
+from packages.world.entities.EntityTemplate import EntityTemplate
+from packages.world.cameras.CameraSettings import *
+from packages.world.cameras.Camera import Camera
+from packages.world.Cursor import Cursor
 
 from typing import override
 from pyrr import Matrix44
 import numpy as np
 
 class TPSCamera(Camera):
-    def __init__(self, name_camera, pos_camera, entity: Entity):
+    def __init__(self, name_camera, pos_camera, entity: EntityTemplate):
         Camera.__init__(self, name_camera, pos_camera)
         self._entity = entity
         self._current_distance_from_target = default_current_distance_from_target
@@ -79,7 +79,7 @@ class TPSCamera(Camera):
     def _reset_max_distance_from_target(self):
         self._max_distance_from_target = default_max_distance_from_target
 
-    def _set_entity(self, entity: Entity):
+    def _set_entity(self, entity: EntityTemplate):
         self._entity = entity
 
 class NoEntitySet(Exception):

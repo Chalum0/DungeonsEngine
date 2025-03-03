@@ -1,4 +1,4 @@
-from packages.shaders.Shader import *
+from packages.core.shaders.Shader import *
 
 from freetype import FT_Exception
 import numpy as np
