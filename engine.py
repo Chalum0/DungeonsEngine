@@ -39,11 +39,17 @@ class Engine(WindowManager, SceneManager):
             self.ctx.clear(0.05, 0.05, 0.1)
             self.ctx.enable(moderngl.DEPTH_TEST)
 
-            # self.tasks()
+            self.update()
             self.render()
 
             glfw.swap_buffers(self.window)
             glfw.poll_events()
+
+    def update(self):
+        for entity in self.current_scene.entities:
+            # print(type(entity))
+            entity.update()
+
     def render(self):
         if self.current_scene is not None:
             if self.current_scene.camera is not None:

@@ -20,4 +20,3 @@ class Scene(CameraManager, EntityManager):
         entity: EntityTemplate = self._entity_templates_manager.get_entity_template_by_name(template_name)
         return self._spawn_entity(entity)
 
-

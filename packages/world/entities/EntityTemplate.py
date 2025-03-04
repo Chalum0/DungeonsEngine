@@ -154,6 +154,6 @@ class EntityTemplate:
     def set_on_update_callback(self, callback_function):
         self._on_update_callback = callback_function
 
-    def on_update(self):
+    def update(self):
         if self._on_update_callback is not None:
             self._on_update_callback()
