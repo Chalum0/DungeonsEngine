@@ -5,12 +5,12 @@ from pyrr import Vector3, Vector4, Matrix44
 import numpy as np
 
 class EntityTemplate:
-    def __init__(self, name, model_name="cube", hidden: bool=False):
+    def __init__(self, name, model_path, hidden: bool=False):
         self._model_manager: ModelManager = None
         self._all_entities = None
 
         self._name = name
-        self._model_name = model_name
+        self._model_path = model_path
         self._hidden = hidden
 
         self._pos = None
@@ -23,6 +23,8 @@ class EntityTemplate:
         self._all_vertices = None
         self._all_indices = None
         self._bounding_box = None
+
+        self._on_update_callback = None
 
     def instanciate(self, entities_container, model_manager: ModelManager):
         self._all_entities = entities_container
@@ -48,7 +50,7 @@ class EntityTemplate:
         self._hidden = not self._hidden
 
     def _create(self) -> tuple[float, float]:
-        return self._model_manager.load(self._model_name)
+        return self._model_manager.load(self._model_path)
 
     def create_object(self, ctx, shader):
         program = ctx.program(
@@ -148,3 +150,10 @@ class EntityTemplate:
     @property
     def model(self):
         return self._model
+
+    def set_on_update_callback(self, callback_function):
+        self._on_update_callback = callback_function
+
+    def on_update(self):
+        if self._on_update_callback is not None:
+            self._on_update_callback()

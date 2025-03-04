@@ -9,6 +9,7 @@ engine.create_scene("Main_scene")
 engine.use_scene("Main_scene")
 
 engine.create_entity_template("player", "packages/other/entities/models/cube.json")
+# engine.create_entity_template("player", "packages/other/entities/models/player.json")
 player = engine.current_scene.spawn_entity("player")
 
 engine.current_scene.create_camera(engine.current_scene.TPS_CAMERA, "cam1", [0, 0, 0], player)
