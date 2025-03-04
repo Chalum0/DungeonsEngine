@@ -1,7 +1,12 @@
+from packages.world.entities.ModelManager import ModelManager
+from packages.world.ScriptManager import ScriptManager
 from packages.world.Scene import Scene
 
-class SceneManager:
+
+class SceneManager(ScriptManager):
     def __init__(self):
+        ScriptManager.__init__(self)
+        self._model_manager = ModelManager()
         self.current_scene: Scene = None
         self._used_window = None
         self._scenes = {}
@@ -10,7 +15,7 @@ class SceneManager:
         if name is None:
             name = f"scene{len(self._scenes)}"
         if not name in self._scenes.keys():
-            self._scenes[name] = Scene(name, self._used_window)
+            self._scenes[name] = Scene(name, self._used_window, self, self._model_manager)
         else:
             raise SceneAlreadyExists(name)
 

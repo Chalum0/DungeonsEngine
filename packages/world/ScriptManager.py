@@ -1,24 +1,24 @@
+from packages.world.EntityTemplateManager import EntityTemplateManager
+from packages.world.Functions import Functions
+
 from pathlib import Path
 import importlib.util
 import json
-import sys
 import os
 
-from packages.core.system.Functions import Functions
-
-
-class ScriptManager:
+class ScriptManager(EntityTemplateManager):
     def __init__(self):
-        self.folders = []
+        EntityTemplateManager.__init__(self)
+        self._folders = []
 
-    def add_folder(self, folder_path):
-        self.folders.append(folder_path)
+    def add_script_folder(self, folder_path):
+        self._folders.append(folder_path)
 
-    def explore_folder(self):
-        if not self.folders:
+    def _load_models(self):
+        if not self._folders:
             return
 
-        for folder in self.folders:
+        for folder in self._folders:
             path = Path(folder)
             if not path.exists():
                 print(f"Warning: Folder does not exist: {path}")

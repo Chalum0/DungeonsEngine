@@ -5,10 +5,9 @@ from pyrr import Vector3, Vector4, Matrix44
 import numpy as np
 
 class EntityTemplate:
-    def __init__(self, name, entities_container, model_manager: ModelManager, model_name="cube", hidden: bool=False):
-        self.all_entities = entities_container
-
-        self._model_manager: ModelManager = model_manager
+    def __init__(self, name, model_name="cube", hidden: bool=False):
+        self._model_manager: ModelManager = None
+        self._all_entities = None
 
         self._name = name
         self._model_name = model_name
@@ -25,7 +24,9 @@ class EntityTemplate:
         self._all_indices = None
         self._bounding_box = None
 
-    def instanciate(self):
+    def instanciate(self, entities_container, model_manager: ModelManager):
+        self._all_entities = entities_container
+        self._model_manager = model_manager
         self._pos = [0, 0, 0]
         self._rotation = Vector3([0.0, 0.0, 0.0], dtype='float32')
 
@@ -36,8 +37,8 @@ class EntityTemplate:
         self._update_bounding_box()
 
     def kill(self):
-        if self in self.all_entities:
-            self.all_entities.remove(self)
+        if self in self._all_entities:
+            self._all_entities.remove(self)
 
     def hide(self):
         self._hidden = True

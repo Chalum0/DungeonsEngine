@@ -1,4 +1,3 @@
-from packages.core.system.ScriptManager import ScriptManager
 from packages.core.system.WindowManager import WindowManager
 from packages.world.SceneManager import SceneManager
 
@@ -8,11 +7,10 @@ from pyrr import Matrix44
 import moderngl
 import glfw
 
-class Engine(WindowManager, SceneManager, ScriptManager):
+class Engine(WindowManager, SceneManager):
     def __init__(self):
         SceneManager.__init__(self)
         WindowManager.__init__(self)
-        ScriptManager.__init__(self)
         self.on_load = None
         self.on_shutdown = None
         self.on_frame = None
@@ -22,6 +20,7 @@ class Engine(WindowManager, SceneManager, ScriptManager):
         self._initialize_opengl(settings=self.window_settings)
         self._load_shaders()
         self._load_textures()
+        self._load_models()
         self._run_loop()
         self._terminate()
     def _run_loop(self):
