@@ -1,8 +1,10 @@
 from packages.world.entities.ModelManager import ModelManager
 from packages.world.entities.BoundingBox import BoundingBox
+from packages.world.entities.ScriptEntity import ScriptEntity
 
 from pyrr import Vector3, Vector4, Matrix44
 import numpy as np
+import inspect
 
 class EntityTemplate:
     def __init__(self, name, model_path, hidden: bool=False):
@@ -156,4 +158,13 @@ class EntityTemplate:
 
     def update(self):
         if self._on_update_callback is not None:
-            self._on_update_callback()
+            enttity = ScriptEntity()
+            self._call_callback(entity=)
+    def _call_callback(self, **possibla_args):
+        sig = inspect.signature(self._on_update_callback)
+        filtered_args = {}
+        for param_name in sig.parameters:
+            if param_name in possibla_args:
+                filtered_args[param_name] = possibla_args[param_name]
+
+        self._call_callback(**filtered_args)
