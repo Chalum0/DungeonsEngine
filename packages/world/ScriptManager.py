@@ -26,10 +26,9 @@ class ScriptManager(EntityTemplateManager):
             self.models += self._explore_recursive(path)
 
         for model in self.models:
-            template = self.create_entity_template(model["name"], model["path"])
+            template = self.create_entity_template(f"{model['path']}", f"{model['path']}/model.json")
             if model["functions"].main:
                 template.set_on_update_callback(model["functions"].main)
-            # model["functions"].greetings()
 
     def _explore_recursive(self, folder) -> list:
         entries = list(folder.iterdir())
@@ -41,7 +40,7 @@ class ScriptManager(EntityTemplateManager):
         else:
             for entry in entries:
                 if entry.is_dir():
-                    self._explore_recursive(entry)
+                    models.extend(self._explore_recursive(entry))
         return models
 
     def _process_model(self, model_path) -> Functions:
@@ -50,7 +49,6 @@ class ScriptManager(EntityTemplateManager):
         with open(config_path, 'r') as f:
             config = json.load(f)
 
-
         functions = Functions()
         model = config
         for py_file in model_path.rglob("*.py"):
@@ -58,7 +56,7 @@ class ScriptManager(EntityTemplateManager):
             for name, attr in script_functions:
                 setattr(functions, name, attr)
         model["functions"] = functions
-        model["path"] = model_path
+        model["path"] = f"{model_path}"
         return model
 
         # if callable(getattr(functions, 'main', None)):

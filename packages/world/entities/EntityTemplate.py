@@ -157,9 +157,7 @@ class EntityTemplate:
         self._on_update_callback = callback_function
 
     def update(self):
-        print(self._on_update_callback)
         if self._on_update_callback is not None:
-            print("a")
             entity = ScriptEntity(self)
             self._call_callback(entity=entity)
     def _call_callback(self, **possibla_args):
@@ -169,4 +167,4 @@ class EntityTemplate:
             if param_name in possibla_args:
                 filtered_args[param_name] = possibla_args[param_name]
 
-        self._call_callback(**filtered_args)
+        self._on_update_callback(**filtered_args)

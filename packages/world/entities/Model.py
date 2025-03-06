@@ -14,7 +14,7 @@ class Model:
 
     def load(self):
         try:
-            with open(self.model_path, "r") as file:
+            with open(self.model_path, "r", encoding="utf-8") as file:
                 model_data = json.load(file)["segments"]
             for segment in model_data:
                 self.segments.append(ModelSegment(segment))

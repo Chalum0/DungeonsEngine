@@ -10,7 +10,6 @@ class Models:
 
     def load(self, model):
         mdl = Model(model)
-        # print(mdl.vertices)
         return mdl.vertices, mdl.indices
 
 

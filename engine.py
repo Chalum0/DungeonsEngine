@@ -12,6 +12,7 @@ class Engine(WindowManager, SceneManager):
         SceneManager.__init__(self)
         WindowManager.__init__(self)
         self.on_load = None
+        self.on_loaded = None
         self.on_shutdown = None
         self.on_frame = None
     def run(self):
@@ -21,7 +22,8 @@ class Engine(WindowManager, SceneManager):
         self._load_shaders()
         self._load_textures()
         self._load_models()
-        print(self.current_scene._entities)
+        if self.on_loaded:
+            self.on_loaded(self)
         self._run_loop()
         self._terminate()
     def _run_loop(self):
@@ -48,7 +50,6 @@ class Engine(WindowManager, SceneManager):
 
     def update(self):
         for entity in self.current_scene.entities:
-            # print(type(entity))
             entity.update()
 
     def render(self):
