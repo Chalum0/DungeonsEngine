@@ -89,7 +89,7 @@ class EntityTemplate:
         if self._program is None:
             return
 
-        self.model = self._calculate_model_matrix()
+        self._model = self._calculate_model_matrix()
         self._program['model'].write(self.model)
         self._update_bounding_box()
     def _calculate_model_matrix(self):
@@ -157,9 +157,11 @@ class EntityTemplate:
         self._on_update_callback = callback_function
 
     def update(self):
+        print(self._on_update_callback)
         if self._on_update_callback is not None:
-            enttity = ScriptEntity()
-            self._call_callback(entity=)
+            print("a")
+            entity = ScriptEntity(self)
+            self._call_callback(entity=entity)
     def _call_callback(self, **possibla_args):
         sig = inspect.signature(self._on_update_callback)
         filtered_args = {}

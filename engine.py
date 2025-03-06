@@ -21,6 +21,7 @@ class Engine(WindowManager, SceneManager):
         self._load_shaders()
         self._load_textures()
         self._load_models()
+        print(self.current_scene._entities)
         self._run_loop()
         self._terminate()
     def _run_loop(self):

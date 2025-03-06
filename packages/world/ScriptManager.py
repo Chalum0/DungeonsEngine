@@ -27,7 +27,9 @@ class ScriptManager(EntityTemplateManager):
 
         for model in self.models:
             template = self.create_entity_template(model["name"], model["path"])
-            template.set_callback
+            if model["functions"].main:
+                template.set_on_update_callback(model["functions"].main)
+            # model["functions"].greetings()
 
     def _explore_recursive(self, folder) -> list:
         entries = list(folder.iterdir())
