@@ -26,6 +26,28 @@ class Engine(WindowManager, SceneManager):
             self.on_loaded(self)
         self._run_loop()
         self._terminate()
+
+    def run_logic_only(self):
+        print('Running in logic-only mode.')
+        if self.on_load:
+            self.on_load()
+        print('Loaded user on_load().')
+        self._load_models()
+        print('Loaded model.')
+        if self.on_loaded:
+            self.on_loaded(self)
+        print('Loaded user on_loaded().')
+        print('Starting loop. Ctrl+c to stop.\n')
+        self._run_logic_loop()
+
+    def _run_logic_loop(self):
+        print("Running...")
+        self.clock = Clock()
+
+        while True:
+            self.clock.tick()
+            self.update()
+
     def _run_loop(self):
         self.clock = Clock()
         while not self._window_should_close():

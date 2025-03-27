@@ -16,4 +16,4 @@ player = engine.current_scene.spawn_entity("player")
 
 engine.current_scene.create_camera(engine.current_scene.TPS_CAMERA, "cam1", [0, 0, 0], player)
 engine.current_scene.set_camera("cam1")
-engine.run()
+engine.run_logic_only()
