@@ -1,0 +1,10 @@
+player_head_bottom
+player_head_top
+player_head_front
+player_head_back
+player_head_left~~~~
+player_head_right
+player_torso_front
+player_torso_back
+player_torso_left
+player_torso_right

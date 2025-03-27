@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Explorer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 10px;
+            overflow-x: hidden;
+            user-select: none;
+        }
+        h1 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .folder,
+        .file {
+            display: block;
+            padding: 2px;
+            border-radius: 4px;
+            font-size: 13px
+        }
+        .folder-label {
+            cursor: pointer;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .folder-label:hover,
+        .file:hover {
+            background-color: #333333;
+        }
+        .file {
+            color: #cccccc;
+            cursor: default;
+        }
+        .nested {
+            display: none;
+            border-left: 1px solid #444444;
+            padding-left: 5px;
+        }
+        .folder.expanded > .nested {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    {{ tree_html|safe }}
+    <script>
+        function toggleFolder(labelElement) {
+            let folderDiv = labelElement.parentElement;
+            folderDiv.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
