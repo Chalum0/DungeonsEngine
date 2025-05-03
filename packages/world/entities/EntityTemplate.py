@@ -5,6 +5,7 @@ from packages.world.entities.ScriptEntity import ScriptEntity
 from pyrr import Vector3, Vector4, Matrix44
 import numpy as np
 import inspect
+import time
 
 class EntityTemplate:
     def __init__(self, name, model_path, hidden: bool=False):
@@ -28,6 +29,11 @@ class EntityTemplate:
 
         self._on_update_callback = None
 
+        self.entity_creation_times = []
+        self.callback_functions_times = []
+        self.position_update_times = []
+
+
     def instanciate(self, entities_container, model_manager: ModelManager):
         self._all_entities = entities_container
         self._model_manager = model_manager
@@ -38,7 +44,50 @@ class EntityTemplate:
 
         self._all_vertices, self._all_indices = self._create()
         self._bounding_box = BoundingBox()
+        self._precompute_local_bbox()
         self._update_bounding_box()
+
+    def _precompute_local_bbox(self):
+        stride = 6
+
+        min_x = float('inf')
+        min_y = float('inf')
+        min_z = float('inf')
+        max_x = -float('inf')
+        max_y = -float('inf')
+        max_z = -float('inf')
+
+        # 1) Loop over all vertices ONCE to find local min/max
+        for i in range(0, len(self._all_vertices), stride):
+            x = self._all_vertices[i + 0]
+            y = self._all_vertices[i + 1]
+            z = self._all_vertices[i + 2]
+            if x < min_x: min_x = x
+            if y < min_y: min_y = y
+            if z < min_z: min_z = z
+            if x > max_x: max_x = x
+            if y > max_y: max_y = y
+            if z > max_z: max_z = z
+
+        # 2) Store the local bounding box extremes
+        #    (We won’t pass them to bounding_box.update yet,
+        #    because we only want bounding_box to hold the final *world* box.)
+        self._local_min = (min_x, min_y, min_z)
+        self._local_max = (max_x, max_y, max_z)
+
+        # 3) Compute the 8 local-corner coordinates
+        lx, ly, lz = self._local_min
+        ux, uy, uz = self._local_max
+        self._local_bbox_corners = [
+            (lx, ly, lz),
+            (lx, ly, uz),
+            (lx, uy, lz),
+            (lx, uy, uz),
+            (ux, ly, lz),
+            (ux, ly, uz),
+            (ux, uy, lz),
+            (ux, uy, uz),
+        ]
 
     def kill(self):
         if self in self._all_entities:
@@ -74,9 +123,11 @@ class EntityTemplate:
     def get_vertices_amount(self):
         return len(self._all_vertices)
     def set_position(self, x, y, z):
+        start_time = time.time()
         self._pos = (x, y, z)
         self._model = Matrix44.from_translation(self._pos, dtype='float32')
         self._update_pos()
+        self.position_update_times.append(time.time() - start_time)
     def translate(self, dx, dy, dz):
         self._pos = (
             self._pos[0] + dx,
@@ -114,28 +165,23 @@ class EntityTemplate:
         return model_matrix
     def _update_bounding_box(self):
         """
-        Returns the bounding box (min_x, min_y, min_z, max_x, max_y, max_z)
-        of this entity, accounting for the current position and rotation
-        via 'self.model'.
+        Updates self._bounding_box by transforming the local corners
+        by the model matrix and finding min/max of the resulting points.
         """
-        # Since each vertex is stored as [x, y, z, ..., ..., ...] (6 floats total),
-        # reshape or iterate in steps of 6 to isolate the actual positions.
-        stride = 6
+        if not hasattr(self, '_local_bbox_corners'):
+            return  # In case it's called before instantiation
 
-        min_x, min_y, min_z = float('inf'), float('inf'), float('inf')
-        max_x, max_y, max_z = -float('inf'), -float('inf'), -float('inf')
+        min_x = float('inf')
+        min_y = float('inf')
+        min_z = float('inf')
+        max_x = -float('inf')
+        max_y = -float('inf')
+        max_z = -float('inf')
 
-        for i in range(0, len(self._all_vertices), stride):
-            # Extract local vertex coordinates
-            x = self._all_vertices[i + 0]
-            y = self._all_vertices[i + 1]
-            z = self._all_vertices[i + 2]
-
-            # Convert to a 4D vector so it can be multiplied by the model matrix
-            local_pos = Vector4([x, y, z, 1.0], dtype='float32')
+        for (cx, cy, cz) in self._local_bbox_corners:
+            local_pos = Vector4([cx, cy, cz, 1.0], dtype='float32')
             world_pos = self._model * local_pos
 
-            # Update min/max bounds
             if world_pos.x < min_x: min_x = world_pos.x
             if world_pos.y < min_y: min_y = world_pos.y
             if world_pos.z < min_z: min_z = world_pos.z
@@ -144,7 +190,10 @@ class EntityTemplate:
             if world_pos.y > max_y: max_y = world_pos.y
             if world_pos.z > max_z: max_z = world_pos.z
 
-        self._bounding_box.update_with_min_max(min_x, min_y, min_z, max_x, max_y, max_z)
+        self._bounding_box.update_with_min_max(
+            min_x, min_y, min_z,
+            max_x, max_y, max_z
+        )
 
     def get_pos(self):
         return self._pos
@@ -158,13 +207,20 @@ class EntityTemplate:
 
     def update(self):
         if self._on_update_callback is not None:
+            start_time = time.time()
             entity = ScriptEntity(self)
+            self.entity_creation_times.append(time.time() - start_time)
             self._call_callback(entity=entity)
+
     def _call_callback(self, **possibla_args):
         sig = inspect.signature(self._on_update_callback)
         filtered_args = {}
+
         for param_name in sig.parameters:
             if param_name in possibla_args:
                 filtered_args[param_name] = possibla_args[param_name]
 
+        start_time = time.time()
         self._on_update_callback(**filtered_args)
+        self.callback_functions_times.append(time.time() - start_time)
+
