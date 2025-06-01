@@ -47,6 +47,7 @@ class EntityTemplate:
         self._precompute_local_bbox()
         self._update_bounding_box()
 
+
     def _precompute_local_bbox(self):
         stride = 6
 

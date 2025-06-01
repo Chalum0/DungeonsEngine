@@ -89,6 +89,7 @@ class Engine(WindowManager, SceneManager):
                         entity.get_vertex_object()["vao"].render(moderngl.TRIANGLES, vertices=entity.get_vertices_amount())
                     else:
                         entity.create_object(self.ctx, self.shader)
+                        print(type(entity._vao))
 
     def quit(self):
         self._terminate()

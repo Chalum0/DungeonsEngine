@@ -1,7 +1,10 @@
+# from http.cookiejar import debug
+
 import engine
 
 def start(eng: engine.Engine):
-    eng.current_scene.spawn_entity("models\\cube")
+    for i in range(1):
+        eng.current_scene.spawn_entity("models\\cube")
 
 
 engine = engine.Engine()
@@ -16,4 +19,4 @@ player = engine.current_scene.spawn_entity("player")
 
 engine.current_scene.create_camera(engine.current_scene.TPS_CAMERA, "cam1", [0, 0, 0], player)
 engine.current_scene.set_camera("cam1")
-engine.run_logic_only()
+engine.run()
