@@ -4,7 +4,7 @@ import engine
 
 def start(eng: engine.Engine):
     for i in range(1):
-        eng.current_scene.spawn_entity("models\\cube")
+        eng.current_scene.spawn_entity("models/cube")
 
 
 engine = engine.Engine()

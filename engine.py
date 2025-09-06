@@ -78,8 +78,10 @@ class Engine(WindowManager, SceneManager):
         if self.current_scene is not None:
             if self.current_scene.camera is not None:
 
-                view = self.current_scene.camera.update(self.clock.dt, self.window_size[0], self.window_size[1], self.cursor)
-                proj = Matrix44.perspective_projection(45.0, self.window_size[0] / self.window_size[1], 0.1, 1000.0)
+                win_w, win_h = glfw.get_window_size(self.window)
+                view = self.current_scene.camera.update(self.clock.dt, win_w, win_h, self.cursor)
+                self.ctx.viewport = (0, 0, self.window_size[0], self.window_size[1])
+                proj = Matrix44.perspective_projection(45.0, self.window_size[0] / max(1, self.window_size[1]), 0.1, 1000.0)
 
                 for entity in self.current_scene.entities:
                     if entity.get_vertex_object()["vao"] is not None:

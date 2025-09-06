@@ -1,4 +1,4 @@
-from packages.world.entities.ModelManager import ModelManager
+from packages.world.ModelManager import ModelManager
 
 
 class EntityManager:
@@ -8,7 +8,7 @@ class EntityManager:
 
     def _spawn_entity(self, entity):
         self._entities.append(entity)
-        entity.instanciate(self._entities, self._model_manager)
+        entity.instantiate(self._entities, self._model_manager)
         return entity
 
     def update_entities(self):

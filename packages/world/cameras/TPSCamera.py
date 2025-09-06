@@ -18,9 +18,9 @@ class TPSCamera(Camera):
             raise NoEntitySet()
 
 
-    def update(self, delta_time, width, height, cursor: Cursor):
+    def update(self, delta_time, win_w, win_h, cursor):
         mouse_pos_x, mouse_pos_y = cursor.get_position()
-        center_x, center_y = width / 2, height / 2
+        center_x, center_y = win_w * 0.5, win_h * 0.5
         offset_x = mouse_pos_x - center_x
         offset_y = mouse_pos_y - center_y
 
@@ -31,8 +31,8 @@ class TPSCamera(Camera):
             # Clamp pitch to avoid flipping the camera upside down
             self._pitch = max(-89.0, min(89.0, self._pitch))
 
-        # re-center the mouse
-        cursor.set_position(center_x, center_y)
+            # re-center the mouse
+            cursor.set_position(center_x, center_y)
 
         # Adjust if your player's pivot is really at the feet
         # Suppose you want the midpoint around y=1.5

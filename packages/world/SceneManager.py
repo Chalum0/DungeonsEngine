@@ -1,4 +1,4 @@
-from packages.world.entities.ModelManager import ModelManager
+from packages.world.ModelManager import ModelManager
 from packages.world.ScriptManager import ScriptManager
 from packages.world.Scene import Scene
 

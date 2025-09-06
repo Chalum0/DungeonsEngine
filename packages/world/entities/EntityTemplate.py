@@ -1,9 +1,8 @@
-from packages.world.entities.ModelManager import ModelManager
+from packages.world.ModelManager import ModelManager
 from packages.world.entities.BoundingBox import BoundingBox
 from packages.world.entities.ScriptEntity import ScriptEntity
 
 from pyrr import Vector3, Vector4, Matrix44
-import numpy as np
 import inspect
 import time
 
@@ -34,7 +33,7 @@ class EntityTemplate:
         self.position_update_times = []
 
 
-    def instanciate(self, entities_container, model_manager: ModelManager):
+    def instantiate(self, entities_container, model_manager: ModelManager):
         self._all_entities = entities_container
         self._model_manager = model_manager
         self._pos = [0, 0, 0]

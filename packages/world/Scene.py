@@ -1,6 +1,6 @@
 from packages.world.EntityTemplateManager import EntityTemplateManager
 from packages.world.entities.EntityTemplate import EntityTemplate
-from packages.world.entities.ModelManager import ModelManager
+from packages.world.ModelManager import ModelManager
 from packages.world.CameraManager import CameraManager
 from packages.world.EntityManager import EntityManager
 

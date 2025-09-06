@@ -9,3 +9,4 @@ index.html
 tests.py
 /output.txt
 /.nodeignore
+.DS_Store
